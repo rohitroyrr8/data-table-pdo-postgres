@@ -7,6 +7,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $spreadsheet = new Spreadsheet();
+
 $sheet = $spreadsheet->getActiveSheet();
 
 $query = "SELECT * FROM sample limit 100000;";
@@ -18,21 +19,25 @@ $query = "SELECT * FROM sample limit 100000;";
 	   $i = 1;
 	   
 	   //$sheet->setCellValue('A'.$i, 'Id');
-	   //$sheet->setCellValue('B'.$i, 'Name');
-	   $sheet->setCellValue('C'.$i, 'Email');
-	   //$sheet->setCellValue('D'.$i, 'Location');
+	   $sheet->setCellValue('A'.$i, 'Name');
+	   $sheet->setCellValue('B'.$i, 'Email');
+	   $sheet->setCellValue('C'.$i, 'Location');
        foreach($result as $row)
        {	
        		$i++;
    			//$sheet->setCellValue('A'.$i, $row['id']);
-   			//$sheet->setCellValue('B'.$i, $row['name']);
-   			$sheet->setCellValue('C'.$i, $row['email']);
-   			//$sheet->setCellValue('D'.$i, $row['location']);
+   			$sheet->setCellValue('A'.$i, $row['name']);
+   			$sheet->setCellValue('B'.$i, $row['email']);
+   			$sheet->setCellValue('C'.$i, $row['location']);
        }  
     }
 
-$writer = new Xlsx($spreadsheet);
-$writer->save('hello world.xlsx');
+    $writer = new Xlsx($spreadsheet);
+    //$writer->save('export.xlsx');
+     header('Content-Type: application/vnd.ms-excel');
+    header('Content-Disposition: attachment; filename="export.xlsx"');
+    $writer->save("php://output");
+    exit;
 
 
 ?>

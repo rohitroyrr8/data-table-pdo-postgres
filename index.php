@@ -130,7 +130,7 @@
 													<div class="form-group">
 														<button style="    margin-top: 25px;" id="filter" class="btn btn-primary">Filter</button>
 														<a style="  margin-top: 25px;" class="btn btn-primary" href="#" data-toggle="modal" data-target="#upload_modal" >Upload</a>
-														<button style="  margin-top: 25px;" id="download_report" class="btn btn-primary">Download</button>
+														<a style="  margin-top: 25px;" href="test.php" class="btn btn-primary">Download</a>
 														
 														
 													</div>

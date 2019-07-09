@@ -40,6 +40,18 @@
 		.logo{
 			text-decoration: none !important;
 		}
+		.form-control {
+			padding: 0px;
+		}
+		.filter-label {
+			margin-top: 15px;
+		}
+		select.form-control:not([size]):not([multiple]) {
+			height: 26px;
+		} 
+		option {
+			min-height: 7px;
+		}
 	</style>
 </head>
 <body>
@@ -104,12 +116,69 @@
 			<div class="main-panel">
 				<div class="content">
 					<div class="container-fluid">
+						<a style="float: right" class="btn btn-primary" href="#" data-toggle="modal" data-target="#upload_modal" >Upload Data</a>
 						<h4 class="page-title"><?=APP_NAME?> | Dashboard</h4>
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="card">
 									<div class="card-header">
 										<div class="panel">
+											<div style="width: 500px">
+												<h4>Filter Report</h4>
+												
+													<div class="row">
+													<div class="col-md-4">
+														<label class="filter-label">Search Query</label>
+													</div>
+													<div class="col-md-8">
+														<div class="form-group">
+															<input type="text" name="searchQuery" id="searchQuery" class="form-control">
+														</div>
+													</div>
+													<div class="col-md-4">
+														<label class="filter-label">Select Column</label>
+													</div>
+													<div class="col-md-8">
+														<div class="form-group">
+															<select class="form-control" name="searchColumn" id="searchColumn">
+																<option value="email">Email</option>
+																<option value="location">Location</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<label class="filter-label">Order BY</label>
+													</div>
+													<div class="col-md-8">
+														<div class="form-group">
+															<select class="form-control" name="orderColumn" id="orderColumn">
+																<option selected="" value="ID">ID</option>
+																
+															</select>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<label class="filter-label">Order Direction</label>
+													</div>
+													<div class="col-md-8">
+														<div class="form-group">
+															<select class="form-control" name="orderDirection" id="orderDirection">
+																<option value="ASC">Ascending</option>
+																<option value="DESC">Descending</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-md-4"></div>
+													<div class="col-md-8">
+														<div class="form-group">
+															<button style="    margin-top: 25px;" id="filter" class="btn btn-primary form-control">Filter</button>
+														</div>
+													</div>
+													</div>
+												
+											</div>
+
 											<h4>Download Report</h4>
 											<div class="row">
 												<div class="col-md-4">
@@ -128,8 +197,8 @@
 
 												<div class="col-md-4">
 													<div class="form-group">
-														<button style="    margin-top: 25px;" id="filter" class="btn btn-primary">Filter</button>
-														<a style="  margin-top: 25px;" class="btn btn-primary" href="#" data-toggle="modal" data-target="#upload_modal" >Upload</a>
+														<button style="    margin-top: 25px;"  class="btn btn-primary">Filter</button>
+														
 														<a style="  margin-top: 25px;" href="test.php" class="btn btn-primary">Download</a>
 														
 														
@@ -254,14 +323,19 @@ $(document).ready(function() {
     
     function filter_data() {
    		//$('#example').DataTable();  
-   		var from_date = $('#from_date').val();  
-        var to_date = $('#to_date').val();  
+   		//var from_date = $('#from_date').val();  
+        //var to_date = $('#to_date').val();  
+        var orderDirection = $('#orderDirection').val();
+        var orderColumn = $('#orderColumn').val();
+        var searchColumn = $('#searchColumn').val();
+        var searchQuery= $('#searchQuery').val();
+
         var action= "filter";
         $.ajax({  
               url:"backend/fetch.php",  
               method:"POST",  
 
-              data:{from_date:from_date, to_date:to_date, action: action},  
+          	  data:{searchQuery:searchQuery, searchColumn:searchColumn, orderColumn:orderColumn, orderDirection:orderDirection, action:action},  
               success:function(data)  
               {  
           			$('#loading').hide();

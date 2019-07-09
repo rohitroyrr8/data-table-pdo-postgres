@@ -20,6 +20,7 @@
 	<title><?=APP_NAME?> Leads History</title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 	<link rel="stylesheet" href="http://apoxymedia.com/hrm/admin/assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="http://apoxymedia.com/hrm/admin/assets/css/ready.css">
 	<link rel="stylesheet" href="http://apoxymedia.com/hrm/admin/assets/css/demo.css">
@@ -96,6 +97,7 @@
 						</li>
 						<li class="nav-item">
 							<a href="#">
+								
 								<p>===========</p>
 							</a>
 						</li>
@@ -178,43 +180,26 @@
 													</div>
 												
 											</div>
-
-											<h4>Download Report</h4>
-											<div class="row">
-												<div class="col-md-4">
-													<div class="form-group">
-														<label>From</label>
-														<input type="date" name="from_date" id="from_date" class="form-control" placeholder="From Date" required="" /> 
-														
-													</div>
-												</div>
-												<div class="col-md-4">
-													<div class="form-group">
-														<label>To</label>
-														<input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" />  
-													</div>
-												</div>
-
-												<div class="col-md-4">
-													<div class="form-group">
-														<button style="    margin-top: 25px;"  class="btn btn-primary">Filter</button>
-														
-														<a style="  margin-top: 25px;" href="test.php" class="btn btn-primary">Download</a>
-														
-														
-													</div>
-												</div>
-											</div>
-											
 										</div>
 										
 									</div>
 									<div class="card-body table-responsive">
-										<table id="example" class="table table-hover ">
-											<div id="loading" class="text-center">
-												<img style="width: 20%" src="https://cdn-images-1.medium.com/max/1600/0*4Gzjgh9Y7Gu8KEtZ.gif">
+										<div id="loading" class="text-center">
+											<img style="width: 8%" src="https://cdn-images-1.medium.com/max/1600/0*4Gzjgh9Y7Gu8KEtZ.gif">
+										</div>
+										<div class="row">
+										<div class="col-md-10">
+											<table id="example" class="table table-hover ">
+												
+											</table>
+										</div>
+										<div class="col-md-2">
+											<div style="float:right">
+												<a id="downloadFilterData"><i class="fa fa-download" style="font-size: 25px"></i></a>
 											</div>
-										</table>
+										</div>	
+										</div>
+										
 									</div>
 								</div>
 							</div>
@@ -293,7 +278,9 @@ $(document).ready(function() {
 						alert(response.message);
 					}
 					$('#upload_loading').hide();
-					//$('#draft-btn').removeAttr("disabled");
+					$('#loading').show(); 
+			    	filter_data();
+					
 					
 				}
 							
@@ -310,17 +297,31 @@ $(document).ready(function() {
          filter_data();         
     }); 	
 
-    $('#download_report').click(function(){  
-        	$("#example").table2excel({
-		    exclude: ".noExl",
-		    name: "Worksheet 1",
-		    filename: "Report_"+Math.random().toString(36).replace('0.', '')
-		});
+    $('#downloadFilterData').click(function(){
+    	$('#loading').show();
+    	download_filter_data();
+    });
+  	
+  	function download_filter_data() {
+  		var orderDirection = $('#orderDirection').val();
+        var orderColumn = $('#orderColumn').val();
+        var searchColumn = $('#searchColumn').val();
+        var searchQuery= $('#searchQuery').val();
 
-    }); 
+        var action = "custom_download";
 
-    
-    
+        $.ajax({
+        	url:"backend/download.php",
+        	method:"POST",  
+        	data:{searchQuery:searchQuery, searchColumn:searchColumn, orderColumn:orderColumn, orderDirection:orderDirection, action:action},  
+        	success:function(data)  
+            {  
+      			$('#loading').hide();
+               	window.location = data;
+            }  
+        });
+  	}
+
     function filter_data() {
    		//$('#example').DataTable();  
    		//var from_date = $('#from_date').val();  
@@ -346,13 +347,7 @@ $(document).ready(function() {
         });   
    }
 
-   function submitForm($form) {
-	
-	
-	}
-
-
-
+  
 
 });
 	</script>
